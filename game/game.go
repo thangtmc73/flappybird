@@ -15,12 +15,14 @@ const TickPerFrame = 1000 / 30
 type Game struct {
 	frameStart int64
 	running    bool
+	camera     *objects.Camera
 	bird       *objects.Bird
 }
 
 // Init initialized everything in game
 func (g *Game) Init() {
 	g.running = false
+	g.camera = objects.NewCamera(0, config.SCREEN_HEIGHT)
 	g.bird = objects.NewBird()
 }
 
@@ -48,7 +50,7 @@ func (g *Game) updateInGame(deltaTime int64) {
 // Draw draws everything in game
 // Draw is called every frame (typically 1/60[s] for 60Hz display).
 func (g *Game) Draw(screen *ebiten.Image) {
-	g.bird.Draw(screen)
+	g.bird.Draw(screen, g.camera)
 }
 
 // Layout takes the outside size (e.g., the window size) and returns the (logical) screen size.

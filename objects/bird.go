@@ -1,7 +1,6 @@
 package objects
 
 import (
-	"fmt"
 	"math/rand"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -44,9 +43,9 @@ func (b *Bird) Update(deltaTime int64) {
 	b.anim.Update(deltaTime)
 }
 
-func (b *Bird) Draw(screen *ebiten.Image) {
+func (b *Bird) Draw(screen *ebiten.Image, camera *Camera) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(-float64(config.BirdFrameWidth)/2, -float64(config.BirdFrameHeight)/2)
-	fmt.Println(b.positionX, b.positionY)
+	op.GeoM.Translate(camera.Transform(b.positionX, b.positionY))
 	screen.DrawImage(resources.GetSpriteByKey("bird").SubImage(b.spriteSheet.GetRect(*b.anim)).(*ebiten.Image), op)
 }
