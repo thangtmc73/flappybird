@@ -18,7 +18,7 @@ func NewGame() *game.Game {
 }
 
 func main() {
-	ebiten.SetWindowSize(config.SCREEN_WIDTH*2, config.SCREEN_HEIGHT*2)
+	ebiten.SetWindowSize(config.ScreenWidth*2, config.ScreenHeight*2)
 	ebiten.SetWindowTitle("Flappy Bird")
 	if err := ebiten.RunGame(NewGame()); err != nil {
 		log.Fatal(err)

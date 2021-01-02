@@ -22,7 +22,7 @@ type Game struct {
 // Init initialized everything in game
 func (g *Game) Init() {
 	g.running = false
-	g.camera = objects.NewCamera(0, config.SCREEN_HEIGHT)
+	g.camera = objects.NewCamera(0, config.ScreenHeight)
 	g.bird = objects.NewBird()
 }
 
@@ -55,5 +55,5 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 // Layout takes the outside size (e.g., the window size) and returns the (logical) screen size.
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return config.SCREEN_WIDTH, config.SCREEN_HEIGHT
+	return config.ScreenWidth, config.ScreenHeight
 }

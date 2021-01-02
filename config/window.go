@@ -1,4 +1,4 @@
 package config
 
-const SCREEN_WIDTH = 144
-const SCREEN_HEIGHT = 256
+const ScreenWidth = 144
+const ScreenHeight = 256
