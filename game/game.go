@@ -1,21 +1,44 @@
 package game
 
 import (
+	"time"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/thangtmc73/flappybird/config"
 )
 
+// TickPerFrame represents number of ticks per frame
+const TickPerFrame = 1000 / 30
+
 // Game contains everything in game
 type Game struct {
+	frameStart int64
+	running    bool
 }
 
 // Init initialized everything in game
 func (g *Game) Init() {
+	g.running = false
 }
 
 // Update is called every tick (1/60 [s] by default).
 func (g *Game) Update() error {
+	if !g.running {
+		g.running = true
+		g.frameStart = time.Now().UnixNano()
+	}
+
+	g.running = true
+	newTime := time.Now().UnixNano()
+	deltaTime := (newTime - g.frameStart) / 1000000
+	if deltaTime >= TickPerFrame {
+		g.frameStart = newTime
+		g.updateInGame(deltaTime)
+	}
 	return nil
+}
+
+func (g *Game) updateInGame(deltaTime int64) {
 }
 
 // Draw draws everything in game
