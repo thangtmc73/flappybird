@@ -29,6 +29,7 @@ func loadImageToSprite(path string, key string) {
 func Init() {
 	mapSpriteByKey = make(map[string]*ebiten.Image)
 	loadImageToSprite("resources/background.png", "background")
+	loadImageToSprite("resources/ground.png", "ground")
 	loadImageToSprite("resources/bird.png", "bird")
 }
 
