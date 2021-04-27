@@ -17,6 +17,7 @@ type Game struct {
 	running    bool
 	camera     *objects.Camera
 	bird       *objects.Bird
+	background *objects.Background
 }
 
 // Init initialized everything in game
@@ -24,6 +25,7 @@ func (g *Game) Init() {
 	g.running = false
 	g.camera = objects.NewCamera(0, config.ScreenHeight)
 	g.bird = objects.NewBird()
+	g.background = objects.NewBackground()
 }
 
 // Update is called every tick (1/60 [s] by default).
@@ -50,6 +52,7 @@ func (g *Game) updateInGame(deltaTime int64) {
 // Draw draws everything in game
 // Draw is called every frame (typically 1/60[s] for 60Hz display).
 func (g *Game) Draw(screen *ebiten.Image) {
+	g.background.Draw(screen, g.camera)
 	g.bird.Draw(screen, g.camera)
 }
 
