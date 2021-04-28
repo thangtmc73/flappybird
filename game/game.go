@@ -48,6 +48,7 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) updateInGame(deltaTime int64) {
+	g.ground.Update(deltaTime)
 	g.bird.Update(deltaTime)
 }
 
