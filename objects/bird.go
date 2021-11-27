@@ -25,8 +25,10 @@ type Bird struct {
 	spriteSheet          *spritesheet.SpriteSheet
 }
 
-func NewBird() *Bird {
+func NewBird(positionX, positionY float64) *Bird {
 	bird := &Bird{}
+	bird.positionX = positionX
+	bird.positionY = positionY
 	bird.displayType = rand.Intn(totalTypes)
 	bird.anim = animation.New(bird.displayType*3, bird.displayType*3+2, bird.displayType*3, 200)
 	bird.spriteSheet =
