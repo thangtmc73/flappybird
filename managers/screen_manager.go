@@ -56,3 +56,8 @@ func (s *ScreenManager) RemoveScreen() bool {
 	s.Stack = s.Stack[:index]
 	return true
 }
+
+func (s *ScreenManager) ReplaceScreen(screen objects.ScreenHandler) {
+	s.RemoveScreen()
+	s.AddScreen(screen)
+}
