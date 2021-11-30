@@ -5,7 +5,7 @@ import (
 )
 
 type ScreenManager struct {
-	Stack []*objects.ScreenHandler
+	Stack []objects.ScreenHandler
 }
 
 func NewScreenManager() *ScreenManager {
@@ -13,7 +13,7 @@ func NewScreenManager() *ScreenManager {
 	return manager
 }
 
-func (s *ScreenManager) Back() (*objects.ScreenHandler, int) {
+func (s *ScreenManager) Back() (objects.ScreenHandler, int) {
 	stackLen := len(s.Stack)
 	if stackLen == 0 {
 		return nil, -1
@@ -26,14 +26,14 @@ func (s *ScreenManager) IsEmpty() bool {
 	return len(s.Stack) == 0
 }
 
-func (s *ScreenManager) AddScreen(screen *objects.ScreenHandler) {
+func (s *ScreenManager) AddScreen(screen objects.ScreenHandler) {
 	s.Stack = append(s.Stack, screen)
 	newScreen, _ := s.Back()
 	if newScreen == nil {
 		return
 	}
-	if !(*newScreen).Initialized() {
-		(*newScreen).Init()
+	if !newScreen.Initialized() {
+		newScreen.Init()
 	}
 }
 
@@ -43,7 +43,7 @@ func (s *ScreenManager) RemoveScreen() bool {
 	}
 
 	currentScreen, index := s.Back()
-	(*currentScreen).Destroy()
+	currentScreen.Destroy()
 	s.Stack = s.Stack[:index]
 	return true
 }
