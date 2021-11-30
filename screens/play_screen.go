@@ -4,6 +4,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/thangtmc73/flappybird/config"
 	"github.com/thangtmc73/flappybird/objects"
+	"github.com/thangtmc73/flappybird/utils"
 	"math"
 )
 
@@ -39,9 +40,15 @@ func (playScreen * PlayScreen) Initialized() bool {
 }
 
 func (playScreen *PlayScreen) Update(deltaTime int64) {
+	if !playScreen.startPlay && utils.IsGameKeyPress() {
+		playScreen.startPlay = true
+	}
 	if !playScreen.startPlay {
 		playScreen.birdReadyTime += deltaTime
 		playScreen.bird.SetPositionY(InitialBirdPositionY + 3 * math.Sin(math.Pi * 2 / 1200 * float64(playScreen.birdReadyTime)))
+	}
+	if utils.IsGameKeyPress() {
+		playScreen.bird.Fly()
 	}
 	playScreen.ground.Update(deltaTime)
 	playScreen.bird.Update(deltaTime)
