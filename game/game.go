@@ -5,6 +5,7 @@ import (
 	"github.com/thangtmc73/flappybird/config"
 	"github.com/thangtmc73/flappybird/managers"
 	"github.com/thangtmc73/flappybird/screens"
+	"github.com/thangtmc73/flappybird/utils"
 	"time"
 )
 
@@ -54,6 +55,15 @@ func (g *Game) updateInGame(deltaTime int64) {
 		return
 	}
 	currentScreen.Update(deltaTime)
+	switch g.mode {
+	case Start:
+		if utils.IsGameKeyPress() {
+			managers.ScreenManagerInstance().ReplaceScreen(screens.NewPlayScreen())
+			g.mode = Play
+		}
+	default:
+		break
+	}
 }
 
 // Draw draws everything in game
