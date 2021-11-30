@@ -1,7 +1,6 @@
 package objects
 
 import (
-	"fmt"
 	"math"
 	"math/rand"
 
@@ -60,7 +59,6 @@ func (b *Bird) Update(deltaTime int64) {
 			b.rotateDegree = FallDownRotateDegree
 			b.rewindTime = 0
 		}
-		fmt.Println(b.rewindTime, b.rotateDegree, float64(b.rewindTime / 2000))
 	}
 	b.anim.Update(deltaTime)
 }
