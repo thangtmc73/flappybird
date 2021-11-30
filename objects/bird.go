@@ -20,11 +20,14 @@ const (
 
 const RewindRotateDegree = -30
 const FallDownRotateDegree = 90
-const RewindDuration = 850 // ms
+const RewindDuration = 1000 // ms
+const Gravity = 0.0025
+const FlyVx = 0.046
 
 // Bird describes bird in game
 type Bird struct {
 	positionX, positionY float64
+	vX, vY float64
 	displayType          int
 	anim                 *animation.Animation
 	spriteSheet          *spritesheet.SpriteSheet
@@ -37,6 +40,8 @@ func NewBird(positionX, positionY float64) *Bird {
 	bird := &Bird{}
 	bird.positionX = positionX
 	bird.positionY = positionY
+	bird.vX = 0
+	bird.vY = 0
 	bird.displayType = rand.Intn(totalTypes)
 	bird.anim = animation.New(bird.displayType*3, bird.displayType*3+2, bird.displayType*3, 200)
 	bird.spriteSheet =
@@ -52,6 +57,12 @@ func NewBird(positionX, positionY float64) *Bird {
 }
 
 func (b *Bird) Update(deltaTime int64) {
+	b.positionX += b.vX * float64(deltaTime)
+	b.positionY += b.vY * float64(deltaTime)
+	if b.autoFall {
+		b.vY -= Gravity
+
+	}
 	if b.autoFall && b.rotateDegree < FallDownRotateDegree {
 		b.rewindTime += deltaTime
 		b.rotateDegree = float64(RewindRotateDegree) + float64(FallDownRotateDegree - RewindRotateDegree) * float64(b.rewindTime) / RewindDuration
@@ -81,7 +92,7 @@ func (b *Bird) Fly() {
 	b.rotateDegree = RewindRotateDegree
 	b.rewindTime = 0
 	b.autoFall = true
-	b.positionY += 5
+	b.vY = FlyVx
 }
 
 func (b *Bird) Draw(screen *ebiten.Image, camera *Camera) {
