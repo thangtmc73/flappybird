@@ -1,6 +1,8 @@
 package objects
 
 import (
+	"fmt"
+	"math"
 	"math/rand"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -17,12 +19,19 @@ const (
 	totalTypes = 3
 )
 
+const RewindRotateDegree = -30
+const FallDownRotateDegree = 90
+const RewindDuration = 850 // ms
+
 // Bird describes bird in game
 type Bird struct {
 	positionX, positionY float64
 	displayType          int
 	anim                 *animation.Animation
 	spriteSheet          *spritesheet.SpriteSheet
+	rotateDegree float64
+	autoFall bool
+	rewindTime int64
 }
 
 func NewBird(positionX, positionY float64) *Bird {
@@ -38,10 +47,21 @@ func NewBird(positionX, positionY float64) *Bird {
 			SetTotalFrames(9).
 			SetFrameHeight(config.BirdFrameHeight).
 			SetFrameWidth(config.BirdFrameWidth)
+	bird.rotateDegree = 0
+	bird.autoFall = false
 	return bird
 }
 
 func (b *Bird) Update(deltaTime int64) {
+	if b.autoFall && b.rotateDegree < FallDownRotateDegree {
+		b.rewindTime += deltaTime
+		b.rotateDegree = float64(RewindRotateDegree) + float64(FallDownRotateDegree - RewindRotateDegree) * float64(b.rewindTime) / RewindDuration
+		if b.rotateDegree > FallDownRotateDegree {
+			b.rotateDegree = FallDownRotateDegree
+			b.rewindTime = 0
+		}
+		fmt.Println(b.rewindTime, b.rotateDegree, float64(b.rewindTime / 2000))
+	}
 	b.anim.Update(deltaTime)
 }
 
@@ -59,9 +79,17 @@ func (b * Bird) SetPositionY(positionY float64) *Bird {
 	return b
 }
 
+func (b *Bird) Fly() {
+	b.rotateDegree = RewindRotateDegree
+	b.rewindTime = 0
+	b.autoFall = true
+	b.positionY += 5
+}
+
 func (b *Bird) Draw(screen *ebiten.Image, camera *Camera) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(-float64(config.BirdFrameWidth)/2, -float64(config.BirdFrameHeight)/2)
+	op.GeoM.Rotate(float64(int(b.rotateDegree)%360) * 2 * math.Pi / 360)
 	op.GeoM.Translate(camera.Transform(b.positionX, b.positionY))
 	screen.DrawImage(resources.GetSpriteByKey("bird").SubImage(b.spriteSheet.GetRect(*b.anim)).(*ebiten.Image), op)
 }
