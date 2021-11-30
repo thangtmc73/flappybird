@@ -8,7 +8,16 @@ type ScreenManager struct {
 	Stack []objects.ScreenHandler
 }
 
-func NewScreenManager() *ScreenManager {
+var instance *ScreenManager
+
+func ScreenManagerInstance() *ScreenManager {
+	if instance == nil {
+		instance = newScreenManager()
+	}
+	return instance
+}
+
+func newScreenManager() *ScreenManager {
 	manager := &ScreenManager{}
 	return manager
 }

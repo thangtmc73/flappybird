@@ -4,6 +4,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/thangtmc73/flappybird/config"
 	"github.com/thangtmc73/flappybird/managers"
+	"github.com/thangtmc73/flappybird/screens"
 	"time"
 )
 
@@ -20,15 +21,14 @@ const TickPerFrame = 1000 / 30
 type Game struct {
 	frameStart int64
 	running    bool
-	screenManager *managers.ScreenManager
 	mode Mode
 }
 
 // Init initialized everything in game
 func (g *Game) Init() {
 	g.running = false
-	g.screenManager = managers.NewScreenManager()
 	g.mode = Start
+	managers.ScreenManagerInstance().AddScreen(screens.NewStartScreen())
 }
 
 // Update is called every tick (1/60 [s] by default).
@@ -49,21 +49,21 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) updateInGame(deltaTime int64) {
-	currentScreen, _ := g.screenManager.Back()
+	currentScreen, _ := managers.ScreenManagerInstance().Back()
 	if currentScreen == nil {
 		return
 	}
-	(*currentScreen).Update(deltaTime)
+	currentScreen.Update(deltaTime)
 }
 
 // Draw draws everything in game
 // Draw is called every frame (typically 1/60[s] for 60Hz display).
 func (g *Game) Draw(screen *ebiten.Image) {
-	currentScreen, _ := g.screenManager.Back()
+	currentScreen, _ := managers.ScreenManagerInstance().Back()
 	if currentScreen == nil {
 		return
 	}
-	(*currentScreen).Draw(screen)
+	currentScreen.Draw(screen)
 }
 
 // Layout takes the outside size (e.g., the window size) and returns the (logical) screen size.
