@@ -45,6 +45,20 @@ func (b *Bird) Update(deltaTime int64) {
 	b.anim.Update(deltaTime)
 }
 
+func (b* Bird) GetPosition() (float64, float64) {
+	return b.positionX, b.positionY
+}
+
+func (b * Bird) SetPositionX(positionX float64) *Bird {
+	b.positionX = positionX
+	return b
+}
+
+func (b * Bird) SetPositionY(positionY float64) *Bird {
+	b.positionY = positionY
+	return b
+}
+
 func (b *Bird) Draw(screen *ebiten.Image, camera *Camera) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(-float64(config.BirdFrameWidth)/2, -float64(config.BirdFrameHeight)/2)
